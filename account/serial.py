@@ -1,13 +1,12 @@
 from rest_framework import serializers
 
-from .models import User
-
+from .models import User, Category ,Product, Product_imgs, Savat
 
 class UserSerial(serializers.ModelSerializer):
     class Meta:
         model  = User
-        fields = ['username', 'password', 'photo']
-        extra_kwargs = {'password': {'write_only': True}}    
+        fields = ['username', 'password', 'photo', 'id', 'status']
+        extra_kwargs = {'password': {'write_only': True}, 'status': {'read_only': True}}    
 
     def create(self, validated_data):
         password = validated_data.pop('password')
@@ -15,3 +14,41 @@ class UserSerial(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
+
+
+class Change_password(serializers.Serializer):
+    old_password = serializers.CharField(max_length=25)
+    new_password = serializers.CharField(max_length=25)
+    confirm_password = serializers.CharField(max_length=25)
+
+class CategorySerial(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields=['id','name', 'rasm','parent']
+
+
+class Productserial(serializers.ModelSerializer):
+    class Meta:
+        model=Product
+        fields=['id','name','batafsil','price','category']
+
+    def create(self,validated_data):
+        
+        print(validated_data)
+        print(self.context['request'].user)
+
+        owner = self.context['request'].user
+        new_product = Product.objects.create(**validated_data, user=owner)
+        return new_product  
+
+class Savatserial(serializers.ModelSerializer):
+    class Meta:
+        model=Savat
+        fields=['id','soni','product']
+
+    def create(self,validated_data):
+        owner=self.context['request'].user
+        new_savat=Savat.objects.create(**validated_data,user=owner)
+        return new_savat
+
+
