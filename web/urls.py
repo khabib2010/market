@@ -26,12 +26,13 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
+from account.views import MyTokenView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('account.urls')),
-    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login/', MyTokenView.as_view(), name='token_obtain_pair'),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

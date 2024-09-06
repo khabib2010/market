@@ -2,6 +2,22 @@ from rest_framework import serializers
 
 from .models import User, Category ,Product, Product_imgs, Savat
 
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        token['user_id'] = user.id
+        # ...
+        print(token)
+        return token
+
 class UserSerial(serializers.ModelSerializer):
     class Meta:
         model  = User

@@ -1,9 +1,32 @@
 from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from .serial import UserSerial ,CategorySerial ,Change_password ,Productserial,Savatserial
 from .models import User ,Category ,Product ,Product_imgs
 
+
+class MyTokenView(APIView):
+    def post(self, request):
+        username = request.data['username']
+        password = request.data['password']
+        print(username, password)
+        user = User.objects.filter(username=username).last()
+        print(user)
+        if user and user.check_password(password):
+            tokens = RefreshToken.for_user(user=user)
+            message = {
+                "refresh": str(tokens),
+                'access': str(tokens.access_token),
+                'username': user.username,
+                'user_id': user.id,
+                'status': user.status
+            }
+            return Response(message)
+        return Response({
+            'message': 'username yoki parol xato kiritildi.. '
+        })
 
 class UserCreateListView(ListCreateAPIView):
     queryset = User.objects.all()
