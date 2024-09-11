@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import User, Category ,Product, Product_imgs, Savat
+from .models import User, Category ,Product, Product_imgs
 
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -56,15 +56,3 @@ class Productserial(serializers.ModelSerializer):
         owner = self.context['request'].user
         new_product = Product.objects.create(**validated_data, user=owner)
         return new_product  
-
-class Savatserial(serializers.ModelSerializer):
-    class Meta:
-        model=Savat
-        fields=['id','soni','product']
-
-    def create(self,validated_data):
-        owner=self.context['request'].user
-        new_savat=Savat.objects.create(**validated_data,user=owner)
-        return new_savat
-
-

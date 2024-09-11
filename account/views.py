@@ -3,7 +3,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .serial import UserSerial ,CategorySerial ,Change_password ,Productserial,Savatserial
+from .serial import UserSerial ,CategorySerial ,Change_password ,Productserial
 from .models import User ,Category ,Product ,Product_imgs
 
 
@@ -65,15 +65,6 @@ class Productcreate(APIView):
             serializer.save()
         
             return Response({'message':'Ok'})
-        return Response({'message':'kiritishda hatolik'})
-
-
-class Savatcreate(APIView):
-    def post(self,request):
-        serializer=Savatserial(data=request.data,context={'request':request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'message':'ok'})
         return Response({'message':'kiritishda hatolik'})
 
 

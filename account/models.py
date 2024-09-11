@@ -14,7 +14,7 @@ class User(AbstractUser):
 class Category(models.Model):
     name=models.CharField(max_length=500)
     parent=TreeForeignKey('self',verbose_name='ichki_tur',on_delete=models.CASCADE,null=True,blank=True)
-    rasm=models.ImageField(upload_to='category_img/')
+    rasm=models.ImageField(upload_to='category_img/',default='user.png')
 
 
 class Product(models.Model):
@@ -31,8 +31,3 @@ class Product_imgs(models.Model):
     rasm=models.ImageField(upload_to='product_imgs/')
     product=models.ForeignKey(Product,verbose_name='rasmlar',on_delete=models.CASCADE,related_name='imgs')
 
-
-class Savat(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='buys')
-    soni=models.PositiveIntegerField(default=1)
-    product=models.ForeignKey(Product,on_delete=models.CASCADE,related_name='savatlar')
