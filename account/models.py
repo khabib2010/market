@@ -15,7 +15,8 @@ class Category(models.Model):
     name=models.CharField(max_length=500)
     parent=TreeForeignKey('self',verbose_name='ichki_tur',on_delete=models.CASCADE,null=True,blank=True)
     rasm=models.ImageField(upload_to='category_img/',default='user.png')
-
+    
+#okkmmonpnpinipjniobuhobuhbh
 
 class Product(models.Model):
     name=models.CharField(max_length=1000)
